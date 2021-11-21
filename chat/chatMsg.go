@@ -166,7 +166,11 @@ func (m Message) ClearString() string {
 		}
 
 		if translateMap != nil {
-			_, _ = fmt.Fprintf(&msg, translateMap[m.Translate], args...)
+			if _, ok := translateMap[m.Translate]; ok {
+				_, _ = fmt.Fprintf(&msg, translateMap[m.Translate], args...)
+			} else {
+				_, _ = fmt.Fprint(&msg, m.Translate)
+			}
 		} else {
 			_, _ = fmt.Fprint(&msg, m.Translate, m.With)
 		}
